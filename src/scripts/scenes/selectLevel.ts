@@ -8,15 +8,15 @@ export default class SelectLevel extends Phaser.Scene {
     const { width, height } = this.scale
     levels.forEach((level, index) => {
       const levelButton = this.add
-        .text(width * (0.3 + index * 0.1), height * 0.5, `${level}`, {
-          fontSize: '36px',
+        .text(width * (0.3 + index * 0.11), height * 0.5, `${level}`, {
+          fontSize: '24px',
           color: '#000000',
           backgroundColor: '#ffffff',
           padding: {
-            left: 30,
-            right: 30,
-            top: 20,
-            bottom: 20
+            left: 20,
+            right: 20,
+            top: 10,
+            bottom: 10
           }
         })
         .setOrigin(0.5, 0.4)
@@ -37,7 +37,7 @@ export default class SelectLevel extends Phaser.Scene {
 
     const backButton = this.add
       .text(width * 0.5, height * 0.8, 'Back', {
-        fontSize: '48px',
+        fontSize: '24px',
         color: '#000000',
         backgroundColor: '#ffffff',
         padding: {

@@ -8,43 +8,58 @@ export default class MainMenu extends Phaser.Scene {
   init() {}
 
   preload() {
-    this.load.image('logo', '../assets/img/rush-logo.png')
+    this.load.image('logo', '../assets/img/logo.png')
   }
 
   create() {
     const { width, height } = this.scale
 
-    this.add.image(width * 0.5, height * 0.3, 'logo')
+    const logo = this.add.image(Math.floor(width * 0.5), Math.floor(height * 0.25), 'logo')
+    logo.scale = 0.2
 
     const playButton = this.add
-      .text(width * 0.5, height * 0.45, 'Play', {
-        fontSize: '48px',
+      .text(width * 0.333, height * 0.38, 'Play', {
+        fontSize: '24px',
         color: '#000000',
         backgroundColor: '#ffffff',
         padding: {
-          left: 15,
-          right: 15,
-          top: 10,
-          bottom: 10
-        }
+          left: 12.5,
+          right: 12.5,
+          top: 7.5,
+          bottom: 7.5
+        },
+        align: 'center',
+        fixedWidth: 160
       })
-      .setOrigin(0.5, 0.4)
       .setInteractive()
 
     const selectLevelButton = this.add
-      .text(width * 0.5, height * 0.55, 'Select Level', {
-        fontSize: '48px',
+      .text(width * 0.5, height * 0.65, 'Select Level', {
+        fontSize: '24px',
         color: '#000000',
         backgroundColor: '#ffffff',
         padding: {
-          left: 15,
-          right: 15,
-          top: 10,
-          bottom: 10
-        }
+          left: 12.5,
+          right: 12.5,
+          top: 7.5,
+          bottom: 7.5
+        },
+        align: 'center',
+        fixedWidth: 160
       })
       .setOrigin(0.5, 0.4)
       .setInteractive()
+
+    //@ts-ignore
+    WebFont.load({
+      google: {
+        families: ['VT323']
+      },
+      active: () => {
+        playButton.setFontFamily('VT323')
+        selectLevelButton.setFontFamily('VT323')
+      }
+    })
 
     playButton.on('pointerover', () => {
       playButton.setBackgroundColor('#ff69b4')

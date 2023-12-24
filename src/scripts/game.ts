@@ -4,29 +4,26 @@ import PreloadScene from './scenes/preloadScene'
 import SelectLevel from './scenes/selectLevel'
 import MainGame from './scenes/mainGame'
 
-const DEFAULT_WIDTH = 1920
-const DEFAULT_HEIGHT = 1080
-
-const config = {
+const DEFAULT_WIDTH = 480
+const DEFAULT_HEIGHT = 270
+const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   backgroundColor: '#ffffff',
-  scale: {
-    parent: 'phaser-game',
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
-    width: DEFAULT_WIDTH,
-    height: DEFAULT_HEIGHT
-  },
   scene: [PreloadScene, MainMenu, SelectLevel, MainGame],
+  pixelArt: true,
+  width: DEFAULT_WIDTH,
+  height: DEFAULT_HEIGHT,
+  scale: {
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    zoom: 2
+  },
   physics: {
     default: 'arcade',
     arcade: {
       debug: false,
-      gravity: { y: 400 }
+      gravity: { y: 500 }
     }
   }
 }
 
-window.addEventListener('load', () => {
-  const game = new Phaser.Game(config)
-})
+export const game = new Phaser.Game(config)

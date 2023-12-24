@@ -3,6 +3,10 @@ export default class PreloadScene extends Phaser.Scene {
     super({ key: 'PreloadScene' })
   }
 
+  preload() {
+    this.load.image('tilemap', 'assets/tilemap.png')
+  }
+
   create() {
     this.scene.start('MainMenu')
   }
