@@ -23,13 +23,13 @@ export default class MainGame extends Phaser.Scene {
     this.load.tilemapTiledJSON('level1', 'assets/data/level1.json')
     this.load.tilemapTiledJSON('level2', 'assets/data/level2.json')
     this.load.tilemapTiledJSON('level3', 'assets/data/level3.json')
+    this.load.tilemapTiledJSON('level4', 'assets/data/level4.json')
+    this.load.tilemapTiledJSON('level5', 'assets/data/level5.json')
 
     this.load.spritesheet('player', 'assets/character.png', {
       frameWidth: 24,
       frameHeight: 24
     })
-
-    this.load.image('tilemap', 'assets/tilemap.png')
 
     this.load.spritesheet('tilemap_copy', 'assets/tilemap.png', {
       frameWidth: 18,
@@ -51,6 +51,24 @@ export default class MainGame extends Phaser.Scene {
     const tileset = map.addTilesetImage('tilemap', 'tilemap')
     const layer = map.createLayer('World', tileset, 0, 0)
     layer.setCollision(new Array(100).fill(0).map((_, i) => i + 1))
+
+    /** TRAMPOLINE */
+    this.anims.create({
+      key: 'trampoline',
+      frames: this.anims.generateFrameNumbers('tilemap_copy', { start: 107, end: 108 }),
+      frameRate: 2,
+      repeat: -1
+    })
+
+    const trampoline = this.physics.add.staticGroup()
+    const trampolineLayer = map.getObjectLayer('Trampoline')
+    if (trampolineLayer) {
+      trampolineLayer.objects.forEach(tramp => {
+        trampoline
+          .get(tramp.x! + tramp.width! / 2, tramp.y! - tramp.height! / 2, 'tilemap_copy', 107)
+          .anims.play('trampoline', true)
+      })
+    }
 
     /** KEYS */
 
@@ -108,7 +126,7 @@ export default class MainGame extends Phaser.Scene {
 
     this.cursors.space.on('down', () => {
       if (this.canJump) {
-        this.player.setVelocityY(-300)
+        this.player.setVelocityY(-270)
       }
     })
 
@@ -128,6 +146,12 @@ export default class MainGame extends Phaser.Scene {
     this.physics.add.overlap(this.player, door, (player, door) => {
       if (this.keyCollected) {
         this.loadNextLevel()
+      }
+    })
+
+    this.physics.add.overlap(this.player, trampoline, (player, trampoline) => {
+      if (player.body.y < trampoline.body.y - trampoline.body.height) {
+        this.player.setVelocityY(-500)
       }
     })
 
@@ -163,7 +187,7 @@ export default class MainGame extends Phaser.Scene {
     this.level++
     this.keyCollected = false
 
-    if (this.level > 3) {
+    if (this.level > 5) {
       localStorage.setItem('isGameCompleted', 'true')
       localStorage.setItem('level', '1')
       this.level = 1

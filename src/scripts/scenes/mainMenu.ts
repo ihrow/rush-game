@@ -88,7 +88,7 @@ export default class MainMenu extends Phaser.Scene {
     })
 
     selectLevelButton.on('pointerup', () => {
-      this.scene.start('SelectLevel', { level: this.level, isGameCompleted: this.isGameCompleted })
+      this.scene.start('SelectLevel', { isGameCompleted: this.isGameCompleted })
     })
   }
 

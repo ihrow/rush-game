@@ -7,7 +7,7 @@ export default class SelectLevel extends Phaser.Scene {
   }
 
   init(data) {
-    this.level = data.level
+    this.level = parseInt(localStorage.getItem('level') || '1')
     this.isGameCompleted = data.isGameCompleted
   }
 

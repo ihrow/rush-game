@@ -3,7 +3,9 @@ export default class PreloadScene extends Phaser.Scene {
     super({ key: 'PreloadScene' })
   }
 
-  preload() {}
+  preload() {
+    this.load.image('tilemap', 'assets/tilemap.png')
+  }
 
   create() {
     const level = localStorage.getItem('level') || '1'
