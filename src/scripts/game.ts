@@ -4,7 +4,7 @@ import PreloadScene from './scenes/preloadScene'
 import SelectLevel from './scenes/selectLevel'
 import MainGame from './scenes/mainGame'
 
-const DEFAULT_WIDTH = 480
+const DEFAULT_WIDTH = 486
 const DEFAULT_HEIGHT = 270
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,

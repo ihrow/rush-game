@@ -1,6 +1,14 @@
 export default class SelectLevel extends Phaser.Scene {
+  level: number
+  isGameCompleted: boolean
+
   constructor() {
     super({ key: 'SelectLevel' })
+  }
+
+  init(data) {
+    this.level = data.level
+    this.isGameCompleted = data.isGameCompleted
   }
 
   create() {
@@ -10,7 +18,7 @@ export default class SelectLevel extends Phaser.Scene {
       const levelButton = this.add
         .text(width * (0.3 + index * 0.11), height * 0.5, `${level}`, {
           fontSize: '24px',
-          color: '#000000',
+          color: '#808080',
           backgroundColor: '#ffffff',
           padding: {
             left: 20,
@@ -20,7 +28,11 @@ export default class SelectLevel extends Phaser.Scene {
           }
         })
         .setOrigin(0.5, 0.4)
-        .setInteractive()
+
+      if (this.isGameCompleted || level == this.level) {
+        levelButton.setInteractive()
+        levelButton.setColor('#000000')
+      }
 
       levelButton.on('pointerover', () => {
         levelButton.setBackgroundColor('#ff69b4')

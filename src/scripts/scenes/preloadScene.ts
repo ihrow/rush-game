@@ -3,11 +3,11 @@ export default class PreloadScene extends Phaser.Scene {
     super({ key: 'PreloadScene' })
   }
 
-  preload() {
-    this.load.image('tilemap', 'assets/tilemap.png')
-  }
+  preload() {}
 
   create() {
-    this.scene.start('MainMenu')
+    const level = localStorage.getItem('level') || '1'
+    const isGameCompleted = localStorage.getItem('isGameCompleted') === 'true'
+    this.scene.start('MainMenu', { level, isGameCompleted })
   }
 }

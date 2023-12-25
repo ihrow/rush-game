@@ -3,22 +3,33 @@ export default class MainGame extends Phaser.Scene {
   player: Phaser.Physics.Arcade.Sprite
   cursors!: Phaser.Types.Input.Keyboard.CursorKeys
   canJump: boolean
-  allKeysCollected: boolean
+  keyCollected: boolean
   coinText: Coin
+  level: number
 
   constructor() {
     super({ key: 'MainGame' })
   }
 
+  init(data) {
+    if (data.level) {
+      this.level = data.level
+    }
+  }
+
   preload() {
     this.load.image('background', 'assets/background.png')
 
-    this.load.tilemapTiledJSON('level1', 'assets/data/level1/level1.json')
+    this.load.tilemapTiledJSON('level1', 'assets/data/level1.json')
+    this.load.tilemapTiledJSON('level2', 'assets/data/level2.json')
+    this.load.tilemapTiledJSON('level3', 'assets/data/level3.json')
 
     this.load.spritesheet('player', 'assets/character.png', {
       frameWidth: 24,
       frameHeight: 24
     })
+
+    this.load.image('tilemap', 'assets/tilemap.png')
 
     this.load.spritesheet('tilemap_copy', 'assets/tilemap.png', {
       frameWidth: 18,
@@ -36,10 +47,10 @@ export default class MainGame extends Phaser.Scene {
     bg.setScale(Math.max(cameraWidth / bg.width, cameraHeight / bg.height))
     this.coinText = new Coin(this, 0)
 
-    const map = this.make.tilemap({ key: 'level1' })
-    const tileset = map.addTilesetImage('platform', 'tilemap')
-    const layer = map.createLayer('Level1', tileset, 0, 0)
-    layer.setCollisionByProperty({ collides: true })
+    const map = this.make.tilemap({ key: `level${this.level}` })
+    const tileset = map.addTilesetImage('tilemap', 'tilemap')
+    const layer = map.createLayer('World', tileset, 0, 0)
+    layer.setCollision(new Array(100).fill(0).map((_, i) => i + 1))
 
     /** KEYS */
 
@@ -51,7 +62,7 @@ export default class MainGame extends Phaser.Scene {
 
     /** DOOR */
     const door = this.physics.add.staticGroup()
-    const doorLayer = map.getObjectLayer('Doors')
+    const doorLayer = map.getObjectLayer('Door')
     door.get(
       doorLayer.objects[0].x! + doorLayer.objects[0].width! / 2,
       doorLayer.objects[0].y! - doorLayer.objects[0].height! / 2,
@@ -79,6 +90,7 @@ export default class MainGame extends Phaser.Scene {
     })
 
     this.player = this.physics.add.sprite(30, 250, 'player')
+    this.player.setCollideWorldBounds(true)
 
     this.anims.create({
       key: 'idle',
@@ -104,6 +116,7 @@ export default class MainGame extends Phaser.Scene {
     this.physics.add.collider(this.player, layer)
 
     this.physics.add.overlap(this.player, keys, (player, key) => {
+      this.keyCollected = true
       key.destroy()
     })
 
@@ -113,8 +126,8 @@ export default class MainGame extends Phaser.Scene {
     })
 
     this.physics.add.overlap(this.player, door, (player, door) => {
-      if (keys.countActive(true) === 0) {
-        this.scene.start('MainMenu')
+      if (this.keyCollected) {
+        this.loadNextLevel()
       }
     })
 
@@ -146,6 +159,21 @@ export default class MainGame extends Phaser.Scene {
     })
   }
 
+  loadNextLevel() {
+    this.level++
+    this.keyCollected = false
+
+    if (this.level > 3) {
+      localStorage.setItem('isGameCompleted', 'true')
+      localStorage.setItem('level', '1')
+      this.level = 1
+      this.scene.start('MainMenu', { level: this.level, isGameCompleted: true })
+      return
+    }
+    localStorage.setItem('level', this.level.toString())
+    this.scene.start('MainGame', { level: this.level })
+  }
+
   resize() {
     const { width, height } = this.scale
     this.cameras.resize(width, height)
@@ -157,12 +185,14 @@ export default class MainGame extends Phaser.Scene {
     if (!this.cursors || !this.player) return
     if (this.cursors.right.isDown) {
       this.player.anims.play('running', true)
+      this.player.flipX = true
       this.player.setVelocityX(SPEED)
     } else if (this.cursors.left.isDown) {
       this.player.anims.play('running', true)
-
+      this.player.flipX = false
       this.player.setVelocityX(-SPEED)
     } else {
+      this.player.flipX = false
       this.player.anims.play('idle', true)
       this.player.setVelocityX(0)
     }

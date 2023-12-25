@@ -1,11 +1,17 @@
 import Phaser from 'phaser'
 
 export default class MainMenu extends Phaser.Scene {
+  level: number
+  isGameCompleted: boolean
+
   constructor() {
     super({ key: 'MainMenu' })
   }
 
-  init() {}
+  init(data) {
+    this.level = data.level
+    this.isGameCompleted = data.isGameCompleted
+  }
 
   preload() {
     this.load.image('logo', '../assets/img/logo.png')
@@ -78,11 +84,11 @@ export default class MainMenu extends Phaser.Scene {
     })
 
     playButton.on('pointerup', () => {
-      this.scene.start('MainGame', { level: 6 })
+      this.scene.start('MainGame', { level: this.level })
     })
 
     selectLevelButton.on('pointerup', () => {
-      this.scene.start('SelectLevel')
+      this.scene.start('SelectLevel', { level: this.level, isGameCompleted: this.isGameCompleted })
     })
   }
 
