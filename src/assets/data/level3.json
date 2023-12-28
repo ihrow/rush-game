@@ -159,10 +159,106 @@
       "visible": true,
       "x": 0,
       "y": 0
+    },
+    {
+      "draworder": "topdown",
+      "id": 7,
+      "name": "Walls",
+      "objects": [
+        {
+          "gid": 59,
+          "height": 18,
+          "id": 11,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 18,
+          "x": 36,
+          "y": 90
+        },
+        {
+          "gid": 59,
+          "height": 18,
+          "id": 12,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 18,
+          "x": 144,
+          "y": 90
+        },
+        {
+          "gid": 59,
+          "height": 18,
+          "id": 13,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 18,
+          "x": 180,
+          "y": 126
+        },
+        {
+          "gid": 59,
+          "height": 18,
+          "id": 14,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 18,
+          "x": 270,
+          "y": 126
+        },
+        {
+          "gid": 59,
+          "height": 18,
+          "id": 15,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 18,
+          "x": 180,
+          "y": 180
+        },
+        {
+          "gid": 59,
+          "height": 18,
+          "id": 16,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 18,
+          "x": 72,
+          "y": 180
+        },
+        {
+          "gid": 59,
+          "height": 18,
+          "id": 17,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 18,
+          "x": 378,
+          "y": 54
+        }
+      ],
+      "opacity": 1,
+      "type": "objectgroup",
+      "visible": true,
+      "x": 0,
+      "y": 0
     }
   ],
-  "nextlayerid": 6,
-  "nextobjectid": 8,
+  "nextlayerid": 8,
+  "nextobjectid": 18,
   "orientation": "orthogonal",
   "renderorder": "right-down",
   "tiledversion": "1.10.2",

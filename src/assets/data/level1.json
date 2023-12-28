@@ -30,6 +30,54 @@
     },
     {
       "draworder": "topdown",
+      "id": 5,
+      "name": "Signs",
+      "objects": [
+        {
+          "gid": 127,
+          "height": 18,
+          "id": 21,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 18,
+          "x": 119.304821150855,
+          "y": 501.483151892172
+        },
+        {
+          "gid": 127,
+          "height": 18,
+          "id": 23,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 18,
+          "x": 254.089683773976,
+          "y": 646.636080870918
+        },
+        {
+          "gid": 86,
+          "height": 18,
+          "id": 26,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 18,
+          "x": 54,
+          "y": 252
+        }
+      ],
+      "opacity": 1,
+      "type": "objectgroup",
+      "visible": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "draworder": "topdown",
       "id": 2,
       "name": "Coins",
       "objects": [
@@ -113,8 +161,8 @@
       "y": 0
     }
   ],
-  "nextlayerid": 5,
-  "nextobjectid": 8,
+  "nextlayerid": 6,
+  "nextobjectid": 27,
   "orientation": "orthogonal",
   "renderorder": "right-down",
   "tiledversion": "1.10.2",

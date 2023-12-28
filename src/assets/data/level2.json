@@ -84,14 +84,14 @@
         {
           "gid": 28,
           "height": 18,
-          "id": 4,
+          "id": 8,
           "name": "",
           "rotation": 0,
           "type": "",
           "visible": true,
           "width": 18,
-          "x": 414,
-          "y": 162
+          "x": 360,
+          "y": 90
         }
       ],
       "opacity": 1,
@@ -135,10 +135,106 @@
       "visible": true,
       "x": 0,
       "y": 0
+    },
+    {
+      "draworder": "topdown",
+      "id": 6,
+      "name": "Walls",
+      "objects": [
+        {
+          "gid": 59,
+          "height": 18,
+          "id": 45,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 18,
+          "x": 72,
+          "y": 180
+        },
+        {
+          "gid": 59,
+          "height": 18,
+          "id": 46,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 18,
+          "x": 180,
+          "y": 180
+        },
+        {
+          "gid": 59,
+          "height": 18,
+          "id": 47,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 18,
+          "x": 216,
+          "y": 144
+        },
+        {
+          "gid": 59,
+          "height": 18,
+          "id": 48,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 18,
+          "x": 324,
+          "y": 144
+        },
+        {
+          "gid": 59,
+          "height": 18,
+          "id": 49,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 18,
+          "x": 324,
+          "y": 90
+        },
+        {
+          "gid": 59,
+          "height": 18,
+          "id": 50,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 18,
+          "x": 414,
+          "y": 90
+        },
+        {
+          "gid": 59,
+          "height": 18,
+          "id": 51,
+          "name": "",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 18,
+          "x": 396,
+          "y": 162
+        }
+      ],
+      "opacity": 1,
+      "type": "objectgroup",
+      "visible": true,
+      "x": 0,
+      "y": 0
     }
   ],
-  "nextlayerid": 5,
-  "nextobjectid": 7,
+  "nextlayerid": 7,
+  "nextobjectid": 52,
   "orientation": "orthogonal",
   "renderorder": "right-down",
   "tiledversion": "1.10.2",

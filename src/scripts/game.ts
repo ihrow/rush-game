@@ -3,13 +3,14 @@ import MainMenu from './scenes/mainMenu'
 import PreloadScene from './scenes/preloadScene'
 import SelectLevel from './scenes/selectLevel'
 import MainGame from './scenes/mainGame'
+import GameOver from './scenes/gameOver'
 
 const DEFAULT_WIDTH = 486
 const DEFAULT_HEIGHT = 270
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   backgroundColor: '#ffffff',
-  scene: [PreloadScene, MainMenu, SelectLevel, MainGame],
+  scene: [PreloadScene, MainMenu, SelectLevel, MainGame, GameOver],
   pixelArt: true,
   width: DEFAULT_WIDTH,
   height: DEFAULT_HEIGHT,

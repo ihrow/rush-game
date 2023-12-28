@@ -1,11 +1,13 @@
 import Coin from '../objects/coins'
 export default class MainGame extends Phaser.Scene {
   player: Phaser.Physics.Arcade.Sprite
+  enemies: Phaser.Physics.Arcade.Sprite[]
   cursors!: Phaser.Types.Input.Keyboard.CursorKeys
   canJump: boolean
   keyCollected: boolean
   coinText: Coin
   level: number
+  helpText: Phaser.GameObjects.Text
 
   constructor() {
     super({ key: 'MainGame' })
@@ -14,7 +16,10 @@ export default class MainGame extends Phaser.Scene {
   init(data) {
     if (data.level) {
       this.level = data.level
+    } else {
+      this.level = parseInt(localStorage.getItem('level') || '1')
     }
+    this.enemies = []
   }
 
   preload() {
@@ -26,7 +31,7 @@ export default class MainGame extends Phaser.Scene {
     this.load.tilemapTiledJSON('level4', 'assets/data/level4.json')
     this.load.tilemapTiledJSON('level5', 'assets/data/level5.json')
 
-    this.load.spritesheet('player', 'assets/character.png', {
+    this.load.spritesheet('characters', 'assets/character.png', {
       frameWidth: 24,
       frameHeight: 24
     })
@@ -51,6 +56,15 @@ export default class MainGame extends Phaser.Scene {
     const tileset = map.addTilesetImage('tilemap', 'tilemap')
     const layer = map.createLayer('World', tileset, 0, 0)
     layer.setCollision(new Array(100).fill(0).map((_, i) => i + 1))
+
+    /** SIGN */
+    const signGroup = this.physics.add.staticGroup()
+    const signLayer = map.getObjectLayer('Signs')
+    if (signLayer) {
+      signLayer.objects.forEach(sign => {
+        signGroup.get(sign.x! + sign.width! / 2, sign.y! - sign.height! / 2, 'tilemap_copy', 85)
+      })
+    }
 
     /** TRAMPOLINE */
     this.anims.create({
@@ -107,19 +121,19 @@ export default class MainGame extends Phaser.Scene {
       coins.get(coin.x! + coin.width! / 2, coin.y! - coin.height! / 2, 'tilemap_copy', 151).anims.play('coin', true)
     })
 
-    this.player = this.physics.add.sprite(30, 250, 'player')
+    this.player = this.physics.add.sprite(30, 250, 'characters')
     this.player.setCollideWorldBounds(true)
 
     this.anims.create({
       key: 'idle',
-      frames: this.anims.generateFrameNumbers('player', { start: 4, end: 4 }),
+      frames: this.anims.generateFrameNumbers('characters', { start: 4, end: 4 }),
       frameRate: 10,
       repeat: -1
     })
 
     this.anims.create({
       key: 'running',
-      frames: this.anims.generateFrameNumbers('player', { start: 4, end: 5 }),
+      frames: this.anims.generateFrameNumbers('characters', { start: 4, end: 5 }),
       frameRate: 10,
       repeat: -1
     })
@@ -129,6 +143,16 @@ export default class MainGame extends Phaser.Scene {
         this.player.setVelocityY(-270)
       }
     })
+
+    /** Walls */
+    const walls = this.physics.add.staticGroup()
+    const wallLayer = map.getObjectLayer('Walls')
+    if (wallLayer) {
+      wallLayer.objects.forEach(wall => {
+        walls.get(wall.x! + wall.width! / 2, wall.y! - wall.height! / 2, 'tilemap_copy', 1)
+      })
+    }
+    walls.setVisible(false)
 
     /** COLLISIONS */
     this.physics.add.collider(this.player, layer)
@@ -153,6 +177,77 @@ export default class MainGame extends Phaser.Scene {
       if (player.body.y < trampoline.body.y - trampoline.body.height) {
         this.player.setVelocityY(-500)
       }
+    })
+
+    this.helpText = this.add.text(-999, 70, 'Use arrow keys to move and space to jump', {
+      fontSize: '12px',
+      color: '#000000',
+      backgroundColor: '#ffffff',
+      padding: {
+        left: 12.5,
+        right: 12.5,
+        top: 7.5,
+        bottom: 7.5
+      },
+      align: 'center'
+    })
+
+    this.physics.add.overlap(this.player, signGroup, (player, sign) => {
+      this.helpText.x = 30
+    })
+
+    /** ENEMY */
+    this.anims.create({
+      key: 'enemy',
+      frames: this.anims.generateFrameNumbers('characters', { start: 18, end: 19 }),
+      frameRate: 5,
+      repeat: -1
+    })
+
+    this.anims.create({
+      key: 'enemy_dead',
+      frames: this.anims.generateFrameNumbers('characters', { start: 20, end: 20 }),
+      frameRate: 5,
+      repeat: -1
+    })
+
+    if (this.level == 1) {
+      this.enemies = []
+    } else if (this.level == 2) {
+      this.enemies = [this.physics.add.sprite(300, 140, 'characters')]
+    } else if (this.level == 3) {
+      this.enemies = [this.physics.add.sprite(100, 80, 'characters')]
+    } else if (this.level == 4) {
+      this.enemies = [this.physics.add.sprite(100, 80, 'characters')]
+    } else if (this.level == 5) {
+      this.enemies = [this.physics.add.sprite(300, 150, 'characters'), this.physics.add.sprite(90, 80, 'characters')]
+    }
+
+    this.enemies.forEach(enemy => {
+      enemy.setCollideWorldBounds(true)
+      enemy.anims.play('enemy', true)
+      enemy.setVelocityX(50)
+      enemy.flipX = true
+      this.physics.add.collider(enemy, layer)
+      this.physics.add.collider(enemy, walls)
+
+      this.physics.add.overlap(this.player, enemy, (player, enemy) => {
+        if (player.body.touching.down && enemy.body.touching.up) {
+          //@ts-ignore
+          enemy.anims.play('enemy_dead', true)
+          //@ts-ignore
+          enemy.setVelocityX(0)
+          //@ts-ignore
+          enemy.setVelocityY(-200)
+          enemy.setData('isDead', true)
+          setTimeout(() => {
+            enemy.destroy()
+          }, 1000)
+        } else {
+          if (enemy.getData('isDead')) return
+          this.displayModalGameOver()
+        }
+      })
     })
 
     /** BACK */
@@ -183,6 +278,10 @@ export default class MainGame extends Phaser.Scene {
     })
   }
 
+  displayModalGameOver() {
+    this.scene.start('GameOver')
+  }
+
   loadNextLevel() {
     this.level++
     this.keyCollected = false
@@ -195,7 +294,7 @@ export default class MainGame extends Phaser.Scene {
       return
     }
     localStorage.setItem('level', this.level.toString())
-    this.scene.start('MainGame', { level: this.level })
+    this.scene.restart({ level: this.level })
   }
 
   resize() {
@@ -219,6 +318,22 @@ export default class MainGame extends Phaser.Scene {
       this.player.flipX = false
       this.player.anims.play('idle', true)
       this.player.setVelocityX(0)
+    }
+
+    this.enemies.forEach(enemy => {
+      if (enemy.getData('isDead')) return
+      if (enemy.body?.blocked.right) {
+        enemy.flipX = false
+        enemy.setVelocityX(-50)
+      } else if (enemy.body?.blocked.left) {
+        enemy.flipX = true
+        enemy.setVelocityX(50)
+      }
+    })
+
+    //if playeer not touching sign
+    if (this.player.body.touching.none) {
+      this.helpText.x = -999
     }
   }
 }
