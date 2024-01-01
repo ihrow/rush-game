@@ -50,5 +50,9 @@ export default class GameOver extends Phaser.Scene {
     mainMenuButton.on('pointerout', () => {
       mainMenuButton.setBackgroundColor('#ffffff')
     })
+
+    this.input.keyboard.on('keydown-ENTER', () => {
+      this.scene.start('MainGame', { level })
+    })
   }
 }

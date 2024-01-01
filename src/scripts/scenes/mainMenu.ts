@@ -14,7 +14,7 @@ export default class MainMenu extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('logo', '../assets/img/logo.png')
+    this.load.image('logo', 'assets/img/logo.png')
   }
 
   create() {
@@ -37,6 +37,23 @@ export default class MainMenu extends Phaser.Scene {
         align: 'center',
         fixedWidth: 160
       })
+      .setInteractive()
+
+    const aboutButton = this.add
+      .text(width * 0.5, height * 0.85, 'About', {
+        fontSize: '24px',
+        color: '#000000',
+        backgroundColor: '#ffffff',
+        padding: {
+          left: 12.5,
+          right: 12.5,
+          top: 7.5,
+          bottom: 7.5
+        },
+        align: 'center',
+        fixedWidth: 160
+      })
+      .setOrigin(0.5, 0.4)
       .setInteractive()
 
     const selectLevelButton = this.add
@@ -64,6 +81,7 @@ export default class MainMenu extends Phaser.Scene {
       active: () => {
         playButton.setFontFamily('VT323')
         selectLevelButton.setFontFamily('VT323')
+        aboutButton.setFontFamily('VT323')
       }
     })
 
@@ -73,6 +91,14 @@ export default class MainMenu extends Phaser.Scene {
 
     playButton.on('pointerout', () => {
       playButton.setBackgroundColor('#ffffff')
+    })
+
+    aboutButton.on('pointerover', () => {
+      aboutButton.setBackgroundColor('#ff69b4')
+    })
+
+    aboutButton.on('pointerout', () => {
+      aboutButton.setBackgroundColor('#ffffff')
     })
 
     selectLevelButton.on('pointerover', () => {
@@ -89,6 +115,10 @@ export default class MainMenu extends Phaser.Scene {
 
     selectLevelButton.on('pointerup', () => {
       this.scene.start('SelectLevel', { isGameCompleted: this.isGameCompleted })
+    })
+
+    aboutButton.on('pointerup', () => {
+      this.scene.start('GameDesc')
     })
   }
 

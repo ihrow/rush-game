@@ -226,6 +226,7 @@ export default class MainGame extends Phaser.Scene {
     this.enemies.forEach(enemy => {
       enemy.setCollideWorldBounds(true)
       enemy.anims.play('enemy', true)
+      enemy.setBodySize(16, 24)
       enemy.setVelocityX(50)
       enemy.flipX = true
       this.physics.add.collider(enemy, layer)
@@ -252,7 +253,7 @@ export default class MainGame extends Phaser.Scene {
 
     /** BACK */
     const back = this.add
-      .text(400, 10, 'Back', {
+      .text(400, 10, 'Menu', {
         fontSize: '12px',
         color: '#000000',
         backgroundColor: '#ffffff',
@@ -306,11 +307,11 @@ export default class MainGame extends Phaser.Scene {
     const SPEED = 150
     this.canJump = this.player.body.blocked.down
     if (!this.cursors || !this.player) return
-    if (this.cursors.right.isDown) {
+    if (this.cursors.right.isDown || this.input.keyboard.checkDown(this.input.keyboard.addKey('D'))) {
       this.player.anims.play('running', true)
       this.player.flipX = true
       this.player.setVelocityX(SPEED)
-    } else if (this.cursors.left.isDown) {
+    } else if (this.cursors.left.isDown || this.input.keyboard.checkDown(this.input.keyboard.addKey('A'))) {
       this.player.anims.play('running', true)
       this.player.flipX = false
       this.player.setVelocityX(-SPEED)

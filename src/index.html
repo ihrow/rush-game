@@ -26,6 +26,8 @@
 
     <link rel="icon" href="./assets/img/logo.png" type="image/png" />
 
+    <link rel="stylesheet" href="./styles.css" />
+
     <title><%= htmlWebpackPlugin.options.gameName %></title>
     <style>
       html,
@@ -33,6 +35,26 @@
         height: 100%;
         margin: 0;
         background-color: #ffffff;
+      }
+      .specification-container {
+        display: none;
+      }
+
+      @media print {
+        @page {
+          margin: 0;
+        }
+        body {
+          margin: 1.6cm;
+        }
+        .specification-container {
+          display: block;
+          position: absolute;
+          width: 100vw;
+          height: 100vh;
+          background-color: #ffffff;
+          z-index: 999;
+        }
       }
     </style>
 
@@ -47,11 +69,17 @@
       }
     </script> -->
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
-    <script>
-      
-    </script>
+    <script></script>
   </head>
   <body>
     <div id="phaser-game"></div>
+    <div class="specification-container">
+      <div class="specification">
+        Controls:<br />
+        - Left Arrow (A) or Right Arrow (D): Move player left or right. <br />- Spacebar: Player jumps.
+        <br /><br />Monsters: <br />- Jump on monster heads to defeat them. <br /><br />Keys and Doors: <br />- Find
+        keys on platforms and proceed to the new levels.
+      </div>
+    </div>
   </body>
 </html>
